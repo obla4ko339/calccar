@@ -1,34 +1,28 @@
-import React from 'react'
+import React, { ImgHTMLAttributes } from 'react'
+import { HtmlAttributes } from 'csstype';
 
 
 interface IpCarInterface {
-    cars: [],
-    carName : String,
-    carImg : String,
+    cars?: [],
+    carName : string,
+    carImg : string,
     carPrice? : number
     // (name : string, price : number) : boolean
 }
 
-class Cars extends React.Component<IpCarInterface>{
 
-   
+
+class Cars extends React.Component<IpCarInterface>{
 
 
     render(){
         return(
             <div>
-
-                {
-                    this.props.cars.map((items,id)=>(
-                        <div>
-                            {items}
-                        </div>
-                    ))
-                }
-
+                {this.props.carName}
+                <img src={this.props.carImg} alt=""/> 
             </div>
         )
     }
-
 }
 
+export default Cars
