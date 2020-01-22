@@ -34,6 +34,10 @@ class App extends React.Component<{},InInterface>{
       .catch((error)=>this.warringFunc(error))
   }
 
+  handlerCarIndex(index:any){
+    console.log(index)
+  }
+
   
 
   public render(){
@@ -47,7 +51,7 @@ class App extends React.Component<{},InInterface>{
       <div className="car-calc-blocks">
         <div>
           {
-            <Cars carName="Logon" carImg="img" /> 
+            <Cars carName="Logon" carImg="img" listCars={this.state.cars} handlerCarIndex={this.handlerCarIndex} /> 
           }
         </div>
         <div></div>
