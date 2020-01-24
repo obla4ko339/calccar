@@ -1,0 +1,67 @@
+.car-calc-blocks {
+    display: flex;
+    justify-content: space-around;
+}
+.bigImg img {
+    max-width: 500px;
+    width: 100%;
+    border: 5px solid #55CFAB;
+}
+.blockDop {
+    background: #eee;
+    margin: 10px 0px;
+    padding: 15px;
+    box-shadow: 2px 2px 5px #55cfab;
+    font-size: 20px;
+}
+.blockDopcheckbox input {
+    margin: 8px 0px;
+}
+.blockDopdayNumber input {
+    border: 1px solid #dbdbdb;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.container_call_back input[type="text"] {
+    padding: 8px 20px;
+    border-radius: 5px;
+    border: 1px solid #55cfab;
+    margin: 4px 0px;
+}
+.container_call_back {
+    display: flex;
+    justify-content: center;
+}
+.container_call_back input[type="submit"] {
+    background: #55cfab;
+    padding: 10px 15px;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+}
+.container_btn {
+    display: flex;
+    justify-content: center;
+}
+.container_img img {
+    background: #EDC800;
+    padding: 3px 3px;
+    box-shadow: 1px 3px 3px #b2b2b2;
+    cursor: pointer;
+}
+/*slider cars*/
+.container_img_lenta{
+    height: 9999px;
+    position: relative;
+}
+.img_lenta{
+    height: 500px;
+    overflow: hidden;
+}
+.navigation_car {
+    text-align: center;
+    cursor: pointer;
+}
