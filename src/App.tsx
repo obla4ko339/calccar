@@ -4,6 +4,8 @@ import './static/css/style.css'
 import DopsRender from './components/DopsRender'
 import CallBack from './components/CallBack'
 import RenderSelectParams from './components/RenderSelectParams'
+import StatusRequest from './components/StatusRequest'
+
 
 
 interface InInterface{
@@ -15,7 +17,8 @@ interface InInterface{
   telCalBack:string,
   selectCar:any,
   nameCar:string,
-  photoCar:string
+  photoCar:string,
+  statusRequest:boolean
 
 }
 
@@ -29,7 +32,16 @@ class App extends React.Component<{},InInterface>{
 
   constructor(props:any){
     super(props)
-    this.state = {cars:0, indexCar:0, dopParamas:0, numberDay:"0", nameCallBack:"", telCalBack:"", selectCar:"", photoCar:"", nameCar:"" }
+    this.state = {cars:0, 
+                  indexCar:0,
+                  dopParamas:0, 
+                  numberDay:"0", 
+                  nameCallBack:"", 
+                  telCalBack:"", 
+                  selectCar:"", 
+                  photoCar:"",
+                  nameCar:"",
+                  statusRequest:false }
   }
 
   getAllCars<T>(data:T){
@@ -51,7 +63,7 @@ class App extends React.Component<{},InInterface>{
   }
 
   handlerCarIndex(index:any){
-   console.log(index.currentTarget)
+   
     this.setState({photoCar:index.currentTarget.getAttribute("src"), nameCar:index.currentTarget.getAttribute("alt")})
     this.setState({indexCar:index.currentTarget.dataset.ar})
   }
@@ -89,6 +101,19 @@ class App extends React.Component<{},InInterface>{
 
   handlerGetValue(data:any ){
     data.preventDefault()
+
+    if(this.state.telCalBack === ""){
+        alert("Заполните номер телефона")
+        return false
+    }
+
+    if(this.state.nameCallBack === ""){
+        alert("Введите Ваше имя")
+        return false
+    }
+
+    this.setState({statusRequest:true})
+    
     
     fetch("http://prokatauto72.ru/handlejson/", {
       method:"post",
@@ -100,9 +125,12 @@ class App extends React.Component<{},InInterface>{
     .then((response)=> response.json())
     .then(result=>{
       setTimeout((result)=>{
-        console.log(result)
+        
       },3000)
     })
+    
+    
+
     
   }
 
@@ -124,11 +152,16 @@ class App extends React.Component<{},InInterface>{
 
   public render(){
     if(!this.state.cars) return false
-    console.log( this.parametr  ) 
+    
 
     return(
       <div className="container-car-calc">
-      { console.log(this.state)}
+     
+
+
+      {
+        this.state.statusRequest ? <StatusRequest textstatus="Спасибо! Ваше запрос отправлен, Наши менеджеры свяжутся с Вами" /> : ""
+      }
 
       <div className="car-calc-blocks">
         <div>

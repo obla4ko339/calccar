@@ -95,3 +95,31 @@ body{
 .imgBottom {
     transform: rotate(180deg);
 }
+.inputtelstyle {
+    padding: 8px 20px;
+    border-radius: 5px;
+    border: 1px solid #55cfab;
+    margin: 4px 0px;
+}
+
+
+.container-car-calc {
+    position: relative;
+}
+
+.statusStyle{
+    background: #55cfab;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    display: inline-block;
+    padding: 30px 0px;
+    z-index: 9;
+    font-size: 25px;
+    transition: all 0.5s;
+}
+
+.numberDay {
+    font-size: 20px;
+}

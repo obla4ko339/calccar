@@ -22,7 +22,7 @@ const RenderSelectParams = (props:IParamsSelectParams) =>{
         <div>
           <div>
             <div className="titleDop">Количество дней аренды</div>
-            <div>{props.numberDay}</div>
+            <div className="numberDay">{props.numberDay}</div>
           </div>
           <div>
             <div className="titleDop">Выбранные дополнительные параметры</div>
