@@ -1,3 +1,4 @@
 export interface interfaceCall{
-    handlerGetValue(data:any):void
-}
+    handlerGetValue(data:any):void,
+    handleInputText(data:HTMLInputElement):void
+} 

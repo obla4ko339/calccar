@@ -47,7 +47,7 @@ class Cars extends React.Component<IpCarInterface, {}>{
         const numberAuto = this.container_img.length
         const visible_img = (this.height_lenta / this.countVisibleImg) - 10
         const maxBottom = numberAuto * visible_img
-        console.log(maxBottom)
+       
         if(upBottonLine){
             this.sliderShift = this.sliderShift + this.height_lenta
            
@@ -79,7 +79,7 @@ class Cars extends React.Component<IpCarInterface, {}>{
         return(
             <div className="container_img_lenta">
             <div className="topLenta navigation_car" id="topLenta" onClick={ ()=>this.handleUp() } >
-            top
+            <img src="http://cdn.onlinewebfonts.com/svg/img_440225.png" className="imgTop totalIconImg" alt=""/>
             </div>
             <div className="img_lenta" id="img_lenta">
             <div className="upBottonLine" id="upBottonLine">
@@ -87,7 +87,7 @@ class Cars extends React.Component<IpCarInterface, {}>{
                 this.props.listCars.map((item:any, index:number)=>(
                   <div key={index}  className="container_img">
                   
-                    <img className="img_car_list" src={item.featured_media_url} alt={item.title.rendered} height="120px" data-id={item.id} data-ar={index} onClick={(e)=>this.props.handlerCarIndex(e.currentTarget.dataset.ar)} />
+                    <img className="img_car_list" src={item.featured_media_url} alt={item.title.rendered} height="120px" data-id={item.id} data-ar={index} onClick={(e)=>this.props.handlerCarIndex(e)} />
                    
                   </div>
                ))
@@ -95,7 +95,7 @@ class Cars extends React.Component<IpCarInterface, {}>{
                </div>
             </div>
             <div className="bottomLenta navigation_car" id="bottomLenta" onClick={(e)=>this.handleBottom()}>
-            bottom
+            <img src="http://cdn.onlinewebfonts.com/svg/img_440225.png" className="imgBottom totalIconImg" alt=""/>
             </div>
             </div>
         )

@@ -4,9 +4,12 @@ import {IParamsSelectParams} from './interface'
 
 
 const RenderSelectParams = (props:IParamsSelectParams) =>{
+    let listdop:Array<any> = []
 
-    
-   
+    for(let value in props.listDopParams){
+      listdop = [...listdop, props.listDopParams[value]]
+    }
+
     
     return(
         <div>
@@ -18,23 +21,20 @@ const RenderSelectParams = (props:IParamsSelectParams) =>{
         </div>
         <div>
           <div>
-            <div>Количество дней аренды</div>
+            <div className="titleDop">Количество дней аренды</div>
             <div>{props.numberDay}</div>
           </div>
           <div>
-            <div>Выбранные дополнительные параметры</div>
-            <div>
-            <div></div>
+            <div className="titleDop">Выбранные дополнительные параметры</div>
+            <div >
+            
                 {
-                    // console.log( Object.keys(props.listDopParams) )
-                    // params.map((item:string, index:number)=>(
-                    //     <div>
-                    //     <div></div>
-                    //         {
-                    //             console.log(item)
-                    //         }
-                    //     </div>
-                    //))
+                     
+                     listdop.map((item:any, index:number)=>(
+                        <div key={index} className="listDopParams">
+                            {item}
+                        </div>
+                    ))
                 }
             </div>
           </div>

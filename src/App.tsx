@@ -12,8 +12,11 @@ interface InInterface{
   dopParamas:any,
   numberDay:string,
   nameCallBack:string,
-  telCalBack:number,
-  selectCar:any
+  telCalBack:string,
+  selectCar:any,
+  nameCar:string,
+  photoCar:string
+
 }
 
 
@@ -21,10 +24,12 @@ class App extends React.Component<{},InInterface>{
 
   private listDop:any = ""
   public params:Array<any> = []
+  public  parametr:any = {}
+  
 
   constructor(props:any){
     super(props)
-    this.state = {cars:0, indexCar:0, dopParamas:0, numberDay:"0", nameCallBack:"", telCalBack:0, selectCar:"" }
+    this.state = {cars:0, indexCar:0, dopParamas:0, numberDay:"0", nameCallBack:"", telCalBack:"", selectCar:"", photoCar:"", nameCar:"" }
   }
 
   getAllCars<T>(data:T){
@@ -45,15 +50,17 @@ class App extends React.Component<{},InInterface>{
       .catch((error)=>this.warringFunc(error))
   }
 
-  handlerCarIndex<T>(index:T){
-    console.log(index)
-   
-    this.setState({indexCar:index})
+  handlerCarIndex(index:any){
+   console.log(index.currentTarget)
+    this.setState({photoCar:index.currentTarget.getAttribute("src"), nameCar:index.currentTarget.getAttribute("alt")})
+    this.setState({indexCar:index.currentTarget.dataset.ar})
   }
 
   // Dop params kreslo, moyka
-  handleCheck(data:HTMLElement){
+  handleCheck(data:HTMLInputElement){
     
+    
+    const nameobject = data.dataset.nameobject
     const nameParams = data.getAttribute("name")
     const titleField = data.dataset.namefield
     if(typeof nameParams == 'string'){
@@ -67,23 +74,49 @@ class App extends React.Component<{},InInterface>{
       this.setState({dopParamas:{...this.listDop}})
     }
     
-    for(let param in this.listDop){
-      this.params = [
-          ...this.params, this.listDop[param]
-      ]
-     
+    if(data.checked){
+      if(typeof nameobject === 'string'){
+          this.parametr = {
+              ...this.parametr, ...{[nameobject]:this.listDop[nameobject].title}
+          }
+      }
+    }else{
+      if(typeof nameobject === 'string'){
+          this.parametr[nameobject] = ""
+      }
     }
-   
-      console.log( this.params )   
-  
   }
 
-  handlerGetValue<T>(data:T){
-  
+  handlerGetValue(data:any ){
+    data.preventDefault()
+    
+    fetch("http://prokatauto72.ru/handlejson/", {
+      method:"post",
+			headers: {
+			 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" 
+      },
+      body:"numberday="+this.state.numberDay+"&nameCallBack="+this.state.nameCallBack+"&telCalBack="+this.state.telCalBack+"&dops="+ JSON.stringify(this.state.dopParamas)+"&photoCar="+this.state.photoCar+"&nameCar="+this.state.nameCar
+    })
+    .then((response)=> response.json())
+    .then(result=>{
+      setTimeout((result)=>{
+        console.log(result)
+      },3000)
+    })
+    
+  }
+
+  handleInputText(data:HTMLInputElement){
+    const nameField = data.dataset.name
+    if(nameField === "name"){
+      this.setState({nameCallBack:data.value})
+    }else if(nameField === "telephone"){
+      this.setState({telCalBack:data.value})
+    }
   }
 
   handleNumberDay(e:React.ChangeEvent<HTMLInputElement>):void{
-    console.log(e.currentTarget.value)
+
     this.setState({numberDay:e.currentTarget.value})
   }
 
@@ -91,7 +124,7 @@ class App extends React.Component<{},InInterface>{
 
   public render(){
     if(!this.state.cars) return false
-    
+    console.log( this.parametr  ) 
 
     return(
       <div className="container-car-calc">
@@ -107,31 +140,15 @@ class App extends React.Component<{},InInterface>{
         <div className="bigImg">
           <img src={ this.state.cars[this.state.indexCar].featured_media_url } alt=""/>
           <div className="selectParams">
-            <div>
-              <h2>
-                Выбранные Вами параметры
-              </h2>
-            </div>
-            <div>
-              <div>
-                <div>Количество дней аренды</div>
-                <div>{this.state.numberDay}</div>
-              </div>
-              <div>
-                <div>Выбранные дополнительные параметры</div>
-                <div>
-                 
-                </div>
-              </div>
-            </div>
+          
 
-            <RenderSelectParams  numberDay={this.state.numberDay} listDopParams={this.state.dopParamas}   />
+            <RenderSelectParams  numberDay={this.state.numberDay} listDopParams={this.parametr}   />
 
           </div>
         </div>
 
-        <div>
-          <h1>Дополнительные услуги</h1> 
+        <div className="dopService">
+          <h2>Дополнительные услуги</h2> 
           <div className="blockDop blockDopdayNumber">
             <div>
             <label htmlFor="numberDay">Количество дней аренды</label>
@@ -145,7 +162,7 @@ class App extends React.Component<{},InInterface>{
           </div>
 
           <div>
-          <CallBack handlerGetValue={this.handlerGetValue.bind(this)} />
+          <CallBack handlerGetValue={this.handlerGetValue.bind(this)}  handleInputText={this.handleInputText.bind(this)} />
           </div>
 
         </div>

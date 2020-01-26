@@ -12,7 +12,7 @@ export default function DopsRender(props:IdopsRender){
                 {
                     listDops.map((item, index)=>(
                         <div key={index}>
-                            <input type="checkbox" name={item.indetificator} id={item.indetificator} data-namefield={item.spendAuto} onClick={(e)=>props.handleCheck(e.currentTarget)} />
+                            <input type="checkbox" name={item.indetificator} data-nameobject={item.indetificator} id={item.indetificator} data-namefield={item.spendAuto} onClick={(e)=>props.handleCheck(e.currentTarget)} />
                             <label htmlFor={item.indetificator}>{item.spendAuto}</label>
                         </div>
                     ))

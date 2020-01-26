@@ -1,3 +1,6 @@
+body{
+    background-color: #343A40;
+}
 .car-calc-blocks {
     display: flex;
     justify-content: space-around;
@@ -49,7 +52,7 @@
 .container_img img {
     background: #EDC800;
     padding: 3px 3px;
-    box-shadow: 1px 3px 3px #b2b2b2;
+    /* box-shadow: 1px 3px 3px #b2b2b2; */
     cursor: pointer;
 }
 /*slider cars*/
@@ -64,4 +67,31 @@
 .navigation_car {
     text-align: center;
     cursor: pointer;
+}
+.titleDop {
+    font-size: 20px;
+    font-weight: 600;
+    color: #55cfab;
+}
+.listDopParams {
+    font-size: 18px;
+    font-style: italic;
+    color: #fff;
+}
+.selectParams h2 {
+    color: #fff;
+    text-align: center;
+}
+.selectParams {
+    color: #fff;
+}
+.dopService h2 {
+    color: #fff;
+    text-align: center;
+}
+.totalIconImg {
+    width: 45px;
+}
+.imgBottom {
+    transform: rotate(180deg);
 }
