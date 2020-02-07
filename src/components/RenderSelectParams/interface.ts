@@ -3,5 +3,7 @@ export interface IParamsSelectParams{
     numberDay:string,
     nameUser?:string,
     telUser?:number,
-    selectCar?:any
+    selectCar?:any,
+    priceCar:any,
+    priceParams:any
 }

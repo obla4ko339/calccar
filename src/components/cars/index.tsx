@@ -75,7 +75,7 @@ class Cars extends React.Component<IpCarInterface, {}>{
 
 
     render(){
-      
+        console.log(this.props.listCars)
         return(
             <div className="container_img_lenta">
             <div className="topLenta navigation_car" id="topLenta" onClick={ ()=>this.handleUp() } >
@@ -86,9 +86,16 @@ class Cars extends React.Component<IpCarInterface, {}>{
             {
                 this.props.listCars.map((item:any, index:number)=>(
                   <div key={index}  className="container_img">
-                  
+                    <div className="wrapImg">
+                        {item.title.rendered}
+                        <div>
+                        <b>{item.metadata.tech.transmission === 'manual' ? "МКПП" : "АКПП"}</b>
+                        </div>
+                        
+                    </div>
+                  <div>
                     <img className="img_car_list" src={item.featured_media_url} alt={item.title.rendered} height="120px" data-id={item.id} data-ar={index} onClick={(e)=>this.props.handlerCarIndex(e)} />
-                   
+                    </div>
                   </div>
                ))
                }

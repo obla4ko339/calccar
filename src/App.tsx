@@ -5,7 +5,9 @@ import DopsRender from './components/DopsRender'
 import CallBack from './components/CallBack'
 import RenderSelectParams from './components/RenderSelectParams'
 import StatusRequest from './components/StatusRequest'
-
+import Days from './components/Days'
+import { type } from 'os';
+import { stringify } from 'querystring';
 
 
 interface InInterface{
@@ -18,7 +20,10 @@ interface InInterface{
   selectCar:any,
   nameCar:string,
   photoCar:string,
-  statusRequest:boolean
+  statusRequest:boolean,
+  tarif:number,
+  price:number,
+  priceParams:any
 
 }
 
@@ -28,6 +33,7 @@ class App extends React.Component<{},InInterface>{
   private listDop:any = ""
   public params:Array<any> = []
   public  parametr:any = {}
+  private paramsPrice:any = {}
   
 
   constructor(props:any){
@@ -41,13 +47,16 @@ class App extends React.Component<{},InInterface>{
                   selectCar:"", 
                   photoCar:"",
                   nameCar:"",
+                  tarif:0,
+                  price:0,
+                  priceParams:"",
                   statusRequest:false }
   }
 
-  getAllCars<T>(data:T){
+  getAllCars(data:any){
       
       this.setState({cars:data})
-
+      
   }
 
   warringFunc<T>(value:T){
@@ -63,18 +72,47 @@ class App extends React.Component<{},InInterface>{
   }
 
   handlerCarIndex(index:any){
-   
+    let dopParams = document.getElementsByClassName("dopParams")
+    
+    for(let i = 0; i<dopParams.length; i++){
+      
+      let dopParamsTeg =  dopParams[i] as HTMLInputElement
+      dopParamsTeg.checked = false
+    }
+
+    this.parametr = {}
+    this.paramsPrice = {}
+    this.setState({price:0})
+
+    for(let val in this.state.priceParams){
+        this.state.priceParams[val] = 0
+    }
+
+
+
     this.setState({photoCar:index.currentTarget.getAttribute("src"), nameCar:index.currentTarget.getAttribute("alt")})
     this.setState({indexCar:index.currentTarget.dataset.ar})
   }
 
   // Dop params kreslo, moyka
   handleCheck(data:HTMLInputElement){
-    
-    
+     console.log(data.checked)  
+     
     const nameobject = data.dataset.nameobject
     const nameParams = data.getAttribute("name")
     const titleField = data.dataset.namefield
+    let paramsPriceDataset = data.checked ? data.dataset.price : 0
+    
+    
+    if(typeof nameParams === "string"){
+      this.paramsPrice = {
+      ...this.paramsPrice, ...{[nameParams]:paramsPriceDataset}
+      }
+    }
+    this.setState({
+      priceParams:this.paramsPrice
+    })
+
     if(typeof nameParams == 'string'){
       this.listDop = {
       ...this.listDop, ...{[nameParams]:{title:titleField}}
@@ -144,8 +182,96 @@ class App extends React.Component<{},InInterface>{
   }
 
   handleNumberDay(e:React.ChangeEvent<HTMLInputElement>):void{
+    let numDay = e.currentTarget.value
+
+    if( this.state.tarif === 0){
+     //1_3_day_skidka
+      if( !!this.state.cars[this.state.indexCar].metadata.prices["1_3_day_skidka"] === true ){ 
+        if( parseInt(numDay) <= 3){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["1_3_day_skidka"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+      
+      if(this.state.cars[this.state.indexCar].metadata.prices["1_3_day_skidka"] == null || this.state.cars[this.state.indexCar].metadata.prices["1_3_day_skidka"] == ""){
+        if( parseInt(numDay) <= 3){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["1_3_day"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+
+//4_7_day_skidka
+      if( !!this.state.cars[this.state.indexCar].metadata.prices["4_7_day_skidka"] === true ){ 
+        if(parseInt(numDay) > 3 && parseInt(numDay) <= 7){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["4_7_day_skidka"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+      
+      if(this.state.cars[this.state.indexCar].metadata.prices["4_7_day_skidka"] == null || this.state.cars[this.state.indexCar].metadata.prices["4_7_day_skidka"] == ""){
+        if( parseInt(numDay) > 3 && parseInt(numDay) <= 7){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["4_7_day"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+
+//8_15_day_skidka
+      if( !!this.state.cars[this.state.indexCar].metadata.prices["8_15_day_skidka"] === true ){ 
+        if( parseInt(numDay) > 7 && parseInt(numDay) <= 15){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["8_15_day_skidka"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+      
+      if(this.state.cars[this.state.indexCar].metadata.prices["8_15_day_skidka"] == null || this.state.cars[this.state.indexCar].metadata.prices["8_15_day_skidka"] == ""){
+        if( parseInt(numDay) > 7 && parseInt(numDay) <= 15){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["8_15_day"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+
+//16_30_day_skidka
+      if( !!this.state.cars[this.state.indexCar].metadata.prices["16_30_day_skidka"] === true ){ 
+        if( parseInt(numDay) > 15 && parseInt(numDay) <= 30){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["16_30_day_skidka"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+      
+      if(this.state.cars[this.state.indexCar].metadata.prices["16_30_day_skidka"] == null || this.state.cars[this.state.indexCar].metadata.prices["16_30_day_skidka"] == ""){
+        if( parseInt(numDay) > 15 && parseInt(numDay) <= 30){
+          let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["16_30_day"])  * parseInt(numDay)
+          this.setState({price:priceCar})
+        }
+      }
+      
+      
+      
+    }else if(this.state.tarif === 1){
+
+      if( !!this.state.cars[this.state.indexCar].metadata.prices["weekend_skidka"] === true ){ 
+        let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["weekend_skidka"])  * parseInt(numDay)
+        this.setState({price:priceCar})
+      }
+
+      if(this.state.cars[this.state.indexCar].metadata.prices["weekend_skidka"] == null || this.state.cars[this.state.indexCar].metadata.prices["weekend_skidka"] == ""){
+        let priceCar = parseInt(this.state.cars[this.state.indexCar].metadata.prices["weekend_skidka"])  * parseInt(numDay)
+        this.setState({price:priceCar})
+      }
+
+
+        
+    }
 
     this.setState({numberDay:e.currentTarget.value})
+  }
+
+
+  hendleDay(data:any){
+    
+    this.setState({tarif:parseInt(data)})
+
+
   }
 
   
@@ -157,7 +283,9 @@ class App extends React.Component<{},InInterface>{
     return(
       <div className="container-car-calc">
      
-
+      {
+        console.log(this.state)
+      }
 
       {
         this.state.statusRequest ? <StatusRequest textstatus="Спасибо! Ваше запрос отправлен, Наши менеджеры свяжутся с Вами" /> : ""
@@ -175,20 +303,31 @@ class App extends React.Component<{},InInterface>{
           <div className="selectParams">
           
 
-            <RenderSelectParams  numberDay={this.state.numberDay} listDopParams={this.parametr}   />
+            <RenderSelectParams  numberDay={this.state.numberDay} listDopParams={this.parametr} priceCar={this.state.price} priceParams={this.state.priceParams}   /> 
 
           </div>
         </div>
 
         <div className="dopService">
-          <h2>Дополнительные услуги</h2> 
+          <h2>Калькулятор проката и аренды авто в Тюмени</h2> 
           <div className="blockDop blockDopdayNumber">
+          <div>
+          <div>
+          Выберите тариф
+          </div>
+          <div>
+            <Days activeClass={this.state.tarif} hendleDay={this.hendleDay.bind(this)} />
+          </div> 
+        </div>
+
             <div>
-            <label htmlFor="numberDay">Количество дней аренды</label>
+            <label htmlFor="numberDay">Укажите количество дней аренды авто</label>
             </div>
+            
             <div>
-            <input type="text" name="numberDay" id="numberDay" placeholder="Количество дней аренды" onChange={(e)=>this.handleNumberDay(e)} />
+            <input type="number" max={ this.state.tarif === 0 ? 30 : 3 } min={0} name="numberDay" id="numberDay"  onChange={(e)=>this.handleNumberDay(e)} placeholder="0" />
             </div>
+            
           </div>
           <div className="blockDop blockDopcheckbox">
             <DopsRender handleCheck={this.handleCheck.bind(this)} />

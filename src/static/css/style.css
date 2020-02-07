@@ -123,3 +123,50 @@ body{
 .numberDay {
     font-size: 20px;
 }
+
+/*edit list cars*/
+.container_img {
+    position: relative;
+}
+.wrapImg {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background: #000000b5;
+    color: #fff;
+    padding: 5px 0px;
+}
+.container_days > div {
+    color: #fff;
+    border: 1px solid #eee;
+    background: #55cfab;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.container_days > div:hover {
+    background: #343a40;
+}
+.container_days {
+    display: flex;
+}
+span.subtext {
+    display: block;
+    max-width: 200px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.container_days_active {
+    background: #343a40 !important;
+}
+.dopService {
+    max-width: 500px;
+    width: 100%;
+}
+.price {
+    text-align: center;
+    font-size: 35px;
+}

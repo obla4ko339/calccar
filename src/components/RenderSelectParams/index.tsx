@@ -5,10 +5,21 @@ import {IParamsSelectParams} from './interface'
 
 const RenderSelectParams = (props:IParamsSelectParams) =>{
     let listdop:Array<any> = []
+    let priceParamsValue:number = 0
+    let priceCar = parseInt(props.priceCar) 
+    
 
     for(let value in props.listDopParams){
       listdop = [...listdop, props.listDopParams[value]]
     }
+
+
+    for(let pricePar in props.priceParams){
+      priceParamsValue = priceParamsValue + parseInt(props.priceParams[pricePar])
+    }
+    let resultPriceArenda = priceParamsValue + priceCar
+    
+
 
     
     return(
@@ -16,8 +27,11 @@ const RenderSelectParams = (props:IParamsSelectParams) =>{
         <div className="selectParams">
         <div>
           <h2>
-            Выбранные Вами параметры
+            Стоимость аренды автомобиля
           </h2>
+        </div>
+        <div className="price">
+          {resultPriceArenda}₽
         </div>
         <div>
           <div>
