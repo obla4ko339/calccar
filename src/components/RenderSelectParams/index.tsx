@@ -6,18 +6,26 @@ import {IParamsSelectParams} from './interface'
 const RenderSelectParams = (props:IParamsSelectParams) =>{
     let listdop:Array<any> = []
     let priceParamsValue:number = 0
-    let priceCar = parseInt(props.priceCar) 
-    
+    let priceCar = parseInt(props.priceCar)
+    let childChair = parseInt(props.childChairPrice) 
+    let resultPriceChildChar:number = 0
 
+    
     for(let value in props.listDopParams){
       listdop = [...listdop, props.listDopParams[value]]
     }
+
+    if(childChair !== 0 && parseInt(props.numberDay) > 1){
+      resultPriceChildChar = (childChair * parseInt(props.numberDay)) - 100
+    }
+
+    console.log(resultPriceChildChar)
 
 
     for(let pricePar in props.priceParams){
       priceParamsValue = priceParamsValue + parseInt(props.priceParams[pricePar])
     }
-    let resultPriceArenda = priceParamsValue + priceCar
+    let resultPriceArenda = priceParamsValue + priceCar + resultPriceChildChar
     
 
 
@@ -27,32 +35,13 @@ const RenderSelectParams = (props:IParamsSelectParams) =>{
         <div className="selectParams">
         <div>
           <h2>
-            Стоимость аренды автомобиля
+            Итого: 
           </h2>
         </div>
         <div className="price">
           {resultPriceArenda}₽
         </div>
-        <div>
-          <div>
-            <div className="titleDop">Количество дней аренды</div>
-            <div className="numberDay">{props.numberDay}</div>
-          </div>
-          <div>
-            <div className="titleDop">Выбранные дополнительные параметры</div>
-            <div >
-            
-                {
-                     
-                     listdop.map((item:any, index:number)=>(
-                        <div key={index} className="listDopParams">
-                            {item}
-                        </div>
-                    ))
-                }
-            </div>
-          </div>
-        </div>
+       
       </div>
 
         </div>

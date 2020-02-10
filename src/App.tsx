@@ -23,7 +23,8 @@ interface InInterface{
   statusRequest:boolean,
   tarif:number,
   price:number,
-  priceParams:any
+  priceParams:any,
+  childchairChild:any
 
 }
 
@@ -50,7 +51,9 @@ class App extends React.Component<{},InInterface>{
                   tarif:0,
                   price:0,
                   priceParams:"",
-                  statusRequest:false }
+                  statusRequest:false,
+                  childchairChild:""
+                 }
   }
 
   getAllCars(data:any){
@@ -96,7 +99,16 @@ class App extends React.Component<{},InInterface>{
 
   // Dop params kreslo, moyka
   handleCheck(data:HTMLInputElement){
-     console.log(data.checked)  
+     console.log(data.dataset.nameobject)  
+    
+     if(data.dataset.nameobject === "childchair_child"){
+       if(data.checked){
+          this.setState({childchairChild: data.dataset.price })
+       }else{
+        this.setState({childchairChild: "0" })
+       }
+       
+     }
      
     const nameobject = data.dataset.nameobject
     const nameParams = data.getAttribute("name")
@@ -303,7 +315,7 @@ class App extends React.Component<{},InInterface>{
           <div className="selectParams">
           
 
-            <RenderSelectParams  numberDay={this.state.numberDay} listDopParams={this.parametr} priceCar={this.state.price} priceParams={this.state.priceParams}   /> 
+              
 
           </div>
         </div>
@@ -315,23 +327,28 @@ class App extends React.Component<{},InInterface>{
           <div>
           Выберите тариф
           </div>
-          <div>
-            <Days activeClass={this.state.tarif} hendleDay={this.hendleDay.bind(this)} />
-          </div> 
+          
         </div>
 
             <div>
             <label htmlFor="numberDay">Укажите количество дней аренды авто</label>
             </div>
             
-            <div>
-            <input type="number" max={ this.state.tarif === 0 ? 30 : 3 } min={0} name="numberDay" id="numberDay"  onChange={(e)=>this.handleNumberDay(e)} placeholder="0" />
+            <div className="container_price_number_day">
+                <div>
+                 <input type="number" max={ this.state.tarif === 0 ? 30 : 3 } min={0} name="numberDay" id="numberDay"  onChange={(e)=>this.handleNumberDay(e)} placeholder="0" />
+                </div>
+              <div className="dop__price">
+                Цена: {this.state.price}₽
+              </div>
             </div>
             
           </div>
           <div className="blockDop blockDopcheckbox">
-            <DopsRender handleCheck={this.handleCheck.bind(this)} />
-          </div>
+            <DopsRender handleCheck={this.handleCheck.bind(this)} >
+              <RenderSelectParams childChairPrice={this.state.childchairChild} numberDay={this.state.numberDay} listDopParams={this.parametr} priceCar={this.state.price} priceParams={this.state.priceParams}   />
+            </DopsRender > 
+          </div>  
 
           <div>
           <CallBack handlerGetValue={this.handlerGetValue.bind(this)}  handleInputText={this.handleInputText.bind(this)} />

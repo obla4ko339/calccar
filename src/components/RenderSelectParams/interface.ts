@@ -5,5 +5,6 @@ export interface IParamsSelectParams{
     telUser?:number,
     selectCar?:any,
     priceCar:any,
-    priceParams:any
+    priceParams:any,
+    childChairPrice:any
 }

@@ -4,6 +4,7 @@ body{
 .car-calc-blocks {
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 .bigImg img {
     max-width: 500px;
@@ -57,7 +58,7 @@ body{
 }
 /*slider cars*/
 .container_img_lenta{
-    height: 9999px;
+    /* height: 9999px; */
     position: relative;
 }
 .img_lenta{
@@ -169,4 +170,33 @@ span.subtext {
 .price {
     text-align: center;
     font-size: 35px;
+}
+.container_dop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.dop__price {
+    font-weight: 800;
+}
+.dop__title {
+    max-width: 346px;
+}
+.container_price_number_day {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.selectParams {
+    color: #000;
+}
+.selectParams h2 {
+    color: #000;
+}
+.selectParams {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
