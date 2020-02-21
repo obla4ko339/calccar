@@ -24,7 +24,9 @@ interface InInterface{
   tarif:number,
   price:number,
   priceParams:any,
-  childchairChild:any
+  childchairChild:any,
+  visibleCalc:boolean,
+  isvisibleCallback:boolean
 
 }
 
@@ -42,7 +44,7 @@ class App extends React.Component<{},InInterface>{
     this.state = {cars:0, 
                   indexCar:0,
                   dopParamas:0, 
-                  numberDay:"0", 
+                  numberDay:"1", 
                   nameCallBack:"", 
                   telCalBack:"", 
                   selectCar:"", 
@@ -52,7 +54,9 @@ class App extends React.Component<{},InInterface>{
                   price:0,
                   priceParams:"",
                   statusRequest:false,
-                  childchairChild:""
+                  childchairChild:"0",
+                  visibleCalc:false,
+                  isvisibleCallback:true
                  }
   }
 
@@ -76,12 +80,23 @@ class App extends React.Component<{},InInterface>{
 
   handlerCarIndex(index:any){
     let dopParams = document.getElementsByClassName("dopParams")
+    let dopPrice = document.getElementsByClassName("dop__price")
     
     for(let i = 0; i<dopParams.length; i++){
       
       let dopParamsTeg =  dopParams[i] as HTMLInputElement
       dopParamsTeg.checked = false
     }
+
+     for(let i = 0; i<dopPrice.length; i++) {
+       if(dopPrice[i].classList.contains("dop__price_active")){
+        dopPrice[i].classList.remove("dop__price_active")
+        dopPrice[i].classList.add("dop__price_disactive")
+        console.log(dopPrice[i])
+       }
+      
+     }
+
 
     this.parametr = {}
     this.paramsPrice = {}
@@ -104,11 +119,25 @@ class App extends React.Component<{},InInterface>{
      if(data.dataset.nameobject === "childchair_child"){
        if(data.checked){
           this.setState({childchairChild: data.dataset.price })
+         
+          data.classList.add("dop__price_active")
+          data.classList.remove("dop__price_disactive")
        }else{
         this.setState({childchairChild: "0" })
+        data.classList.remove("dop__price_active")
+        data.classList.add("dop__price_disactive")
        }
        
      }
+     let dopElement = data.parentElement?.parentElement?.lastChild as HTMLElement
+     if(data.checked){
+      dopElement.classList.remove("dop__price_disactive")
+      dopElement.classList.add("dop__price_active")
+     }else{
+      dopElement.classList.add("dop__price_disactive")
+      dopElement.classList.remove("dop__price_active")
+     }
+    
      
     const nameobject = data.dataset.nameobject
     const nameParams = data.getAttribute("name")
@@ -163,23 +192,25 @@ class App extends React.Component<{},InInterface>{
     }
 
     this.setState({statusRequest:true})
-    
-    
-    fetch("http://prokatauto72.ru/handlejson/", {
+   
+
+    fetch("../handlejson/index.php", {
       method:"post",
-			headers: {
-			 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" 
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" 
       },
-      body:"numberday="+this.state.numberDay+"&nameCallBack="+this.state.nameCallBack+"&telCalBack="+this.state.telCalBack+"&dops="+ JSON.stringify(this.state.dopParamas)+"&photoCar="+this.state.photoCar+"&nameCar="+this.state.nameCar
-    })
+     body:"numberday="+this.state.numberDay+"&nameCallBack="+this.state.nameCallBack+"&telCalBack="+this.state.telCalBack+"&dops="+ JSON.stringify(this.state.dopParamas)+"&photoCar="+this.state.photoCar+"&nameCar="+this.state.nameCar
+    }) 
     .then((response)=> response.json())
-    .then(result=>{
-      setTimeout((result)=>{
-        
-      },3000)
+    
+    
+    this.setState({
+      visibleCalc: this.state.visibleCalc ? false : true
     })
-    
-    
+
+    this.setState({
+      isvisibleCallback:true
+    })
 
     
   }
@@ -286,6 +317,34 @@ class App extends React.Component<{},InInterface>{
 
   }
 
+  handleVisibl(){
+    this.setState({
+      visibleCalc: this.state.visibleCalc ? false : true
+    })
+    console.log(window.scrollY)
+    let containerCalc = document.getElementsByClassName("car-calc-blocks") as HTMLCollectionOf<HTMLElement>
+      if(containerCalc[0]){
+      containerCalc[0].style.top = window.scrollY+"px"}
+    
+    
+  }
+
+  handleClose(){
+    this.setState({
+      visibleCalc: this.state.visibleCalc ? false : true
+    })
+
+    this.setState({
+      isvisibleCallback:true
+    })
+  }
+
+  handleCallBackFeed(){
+        this.setState({
+          isvisibleCallback:this.state.isvisibleCallback ? false : true
+        })
+  }
+
   
 
   public render(){
@@ -293,17 +352,29 @@ class App extends React.Component<{},InInterface>{
     
 
     return(
+      
       <div className="container-car-calc">
+      <div  className={ !this.state.visibleCalc ? "container_btn_calc" : "container_btn_calc_dis"}>
+        <div className="btn_calc"  onClick={()=>{this.handleVisibl()}}>
+        Калькулятор аренды авто
+        </div>
+      </div>
      
+      <div className={ this.state.visibleCalc ?  "overlayStyleVis" : "overlayStyledis"}></div>
+        <div className={ this.state.visibleCalc ?  "container_without_btn container_without_visible" : "container_without_btn container_without_disvisible"}  >
       {
         console.log(this.state)
       }
 
       {
-        this.state.statusRequest ? <StatusRequest textstatus="Спасибо! Ваше запрос отправлен, Наши менеджеры свяжутся с Вами" /> : ""
+        //this.state.statusRequest ? <StatusRequest textstatus="Спасибо! Ваше запрос отправлен, Наши менеджеры свяжутся с Вами" /> : ""
       }
 
-      <div className="car-calc-blocks">
+      <div className="closeWin" onClick={(e)=>this.handleClose()}>
+        X
+      </div>
+      
+      <div className={this.state.isvisibleCallback ? "car-calc-blocks" : "car-calc-blocks_dis"}>
         <div>
           {
             <Cars carName="Logon" carImg="img" listCars={this.state.cars} handlerCarIndex={this.handlerCarIndex.bind(this)} /> 
@@ -324,9 +395,7 @@ class App extends React.Component<{},InInterface>{
           <h2>Калькулятор проката и аренды авто в Тюмени</h2> 
           <div className="blockDop blockDopdayNumber">
           <div>
-          <div>
-          Выберите тариф
-          </div>
+         
           
         </div>
 
@@ -345,21 +414,28 @@ class App extends React.Component<{},InInterface>{
             
           </div>
           <div className="blockDop blockDopcheckbox">
-            <DopsRender handleCheck={this.handleCheck.bind(this)} >
+            <DopsRender handleCheck={this.handleCheck.bind(this)} numday={this.state.numberDay} >
               <RenderSelectParams childChairPrice={this.state.childchairChild} numberDay={this.state.numberDay} listDopParams={this.parametr} priceCar={this.state.price} priceParams={this.state.priceParams}   />
-            </DopsRender > 
+              <div className="orderService">
+                <div onClick={()=>this.handleCallBackFeed()}>
+                Заказать услуг
+                </div>
+              </div>
+              </DopsRender > 
           </div>  
 
-          <div>
-          <CallBack handlerGetValue={this.handlerGetValue.bind(this)}  handleInputText={this.handleInputText.bind(this)} />
-          </div>
+         
 
         </div>
         
       </div>
         
+      <div className={this.state.isvisibleCallback ? "isvisibleCallback" : "isvisibleCallback-dis"}>
+      <CallBack handlerGetValue={this.handlerGetValue.bind(this)}  handleInputText={this.handleInputText.bind(this)} />
+      </div>
 
-      
+
+      </div>
       </div>
     )
   }

@@ -19,12 +19,13 @@ const RenderSelectParams = (props:IParamsSelectParams) =>{
       resultPriceChildChar = (childChair * parseInt(props.numberDay)) - 100
     }
 
-    console.log(resultPriceChildChar)
+    
 
 
     for(let pricePar in props.priceParams){
       priceParamsValue = priceParamsValue + parseInt(props.priceParams[pricePar])
     }
+    console.log(resultPriceChildChar)
     let resultPriceArenda = priceParamsValue + priceCar + resultPriceChildChar
     
 
